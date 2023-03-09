@@ -75,11 +75,22 @@ public class OperationsAwsS3 {
         }
     }
 
-    public static void manipularBucket(){
+    public static void handleBucket(){
         var operacoes = new OperationsAwsS3(Credentials.ACCESS_KEY, Credentials.SECRET_KEY);
         var nameBucket = "";
         operacoes.createBucket(nameBucket);
         operacoes.listBuckets();
         operacoes.deleteBucket(nameBucket);
+    }
+
+    public static void handleFile(){
+        var operacoes = new OperationsAwsS3(Credentials.ACCESS_KEY, Credentials.SECRET_KEY);
+        var nameBucket = "";
+        var originFile = "";
+        var destinationFile = "";
+        operacoes.sendFile(nameBucket,destinationFile,originFile);
+        operacoes.listFiles(nameBucket).forEach(System.out::println);
+        operacoes.deleteFile(nameBucket,destinationFile);
+        operacoes.listFiles(nameBucket).forEach(System.out::println);
     }
 }
