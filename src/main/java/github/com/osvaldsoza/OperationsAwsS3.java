@@ -78,10 +78,11 @@ public class OperationsAwsS3 {
 
     public static void handleBucket(){
         var operacoes = new OperationsAwsS3(Credentials.ACCESS_KEY, Credentials.SECRET_KEY);
-        var nameBucket = "osf79";
-        operacoes.createBucket(nameBucket);
+        var nameBucket = "osf77";
+     //   operacoes.createBucket(nameBucket);
         operacoes.listBuckets().forEach(System.out::println);
        operacoes.deleteBucket(nameBucket);
+
         operacoes.listBuckets().forEach(System.out::println);
     }
 
