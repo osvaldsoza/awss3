@@ -40,7 +40,7 @@ public class OperationsAwsS3 {
     }
 
     public void deleteBucket(final String nameBucket) {
-        if (!clientAmazonS3.doesBucketExistV2(nameBucket))
+        if (clientAmazonS3.doesBucketExistV2(nameBucket))
             clientAmazonS3.deleteBucket(nameBucket);
         else {
             System.out.println("Name of the bucket [" + nameBucket + "] already been used");
@@ -49,11 +49,12 @@ public class OperationsAwsS3 {
     }
 
     public void sendFile(String nameBucket, String destinationFile, String originFile) {
-        if (!clientAmazonS3.doesBucketExistV2(nameBucket))
+        if (clientAmazonS3.doesBucketExistV2(nameBucket)){
             clientAmazonS3.putObject(nameBucket, destinationFile, new File(originFile));
-        else {
-            System.out.println("The bucket [" + nameBucket + "] already exists");
+        }else{
+            System.out.println("The bucket [" + nameBucket + "] not exists");
             return;
+
         }
     }
 
@@ -67,7 +68,7 @@ public class OperationsAwsS3 {
 
     public void deleteFile(String nameBucket, String keyFile){
 
-        if (!clientAmazonS3.doesBucketExistV2(nameBucket))
+        if (clientAmazonS3.doesBucketExistV2(nameBucket))
         clientAmazonS3.deleteObject(nameBucket,keyFile);
         else {
             System.out.println("The bucket [" + nameBucket + "] already exists");
@@ -77,20 +78,21 @@ public class OperationsAwsS3 {
 
     public static void handleBucket(){
         var operacoes = new OperationsAwsS3(Credentials.ACCESS_KEY, Credentials.SECRET_KEY);
-        var nameBucket = "";
+        var nameBucket = "osf79";
         operacoes.createBucket(nameBucket);
-        operacoes.listBuckets();
-        operacoes.deleteBucket(nameBucket);
+        operacoes.listBuckets().forEach(System.out::println);
+       operacoes.deleteBucket(nameBucket);
+        operacoes.listBuckets().forEach(System.out::println);
     }
 
     public static void handleFile(){
         var operacoes = new OperationsAwsS3(Credentials.ACCESS_KEY, Credentials.SECRET_KEY);
-        var nameBucket = "";
-        var originFile = "";
-        var destinationFile = "";
-        operacoes.sendFile(nameBucket,destinationFile,originFile);
+        var nameBucket = "osf77";
+        var originFile = "/Users/osvaldoferreira/Downloads/Musica/Partituras/Brejeiro.pdf";
+        var destinationFile = "Brejeiro.pdf";
+    //    operacoes.sendFile(nameBucket,destinationFile,originFile);
         operacoes.listFiles(nameBucket).forEach(System.out::println);
         operacoes.deleteFile(nameBucket,destinationFile);
-        operacoes.listFiles(nameBucket).forEach(System.out::println);
+       operacoes.listFiles(nameBucket).forEach(System.out::println);
     }
 }
